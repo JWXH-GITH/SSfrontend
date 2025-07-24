@@ -60,13 +60,24 @@ export default function App() {
     setInput("");
 
     try {
-      const res = await fetch(`${apiBaseUrl}/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: userMessage }],
-        }),
-      });
+// Convert local `messages` array to OpenAI format
+const formattedMessages = [
+  { role: "system", content: "You are a helpful assistant for SwimSafer FAQs." },
+  ...messages
+    .filter((msg) => msg.sender !== "system") // skip if you ever have 'system' roles locally
+    .map((msg) => ({
+      role: msg.sender === "user" ? "user": "assistant",
+      content: msg.text,
+    })),
+  { role: "user", content: userMessage },
+];
+
+const res = await fetch(`${apiBaseUrl}/chat`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ messages: formattedMessages }),
+});
+
 
       const data = await res.json();
 
