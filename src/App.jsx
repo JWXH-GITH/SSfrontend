@@ -36,7 +36,7 @@ export default function App() {
   const textareaRef = useRef(null);
 
   // Use env var or fallback localhost
-  const apiBaseUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+  const apiBaseUrl = "https://swimsafer-chatbot.onrender.com";
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
