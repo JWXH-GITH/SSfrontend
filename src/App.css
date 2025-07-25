@@ -125,3 +125,36 @@
     padding: 10px 16px;
   }
 }
+
+/* Typing animation */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 20px;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4ea8de;
+  border-radius: 50%;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-dot.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.typing-dot.delay-2 {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
