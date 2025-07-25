@@ -80,7 +80,7 @@ const res = await fetch(`${apiBaseUrl}/chat`, {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev,
-        { id: prev.length + 1, sender: "bot", text: "Error connecting to backend." },
+        { id: prev.length + 1, sender: "bot", text: "Server Timeout, please try again later." },
       ]);
     }
   };
