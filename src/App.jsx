@@ -77,7 +77,7 @@ export default function App() {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev,
-        { id: prev.length + 1, sender: "bot", text: "Error connecting to backend." },
+        { id: prev.length + 1, sender: "bot", text: "Server timeout, please try again later" },
       ]);
     }
 
