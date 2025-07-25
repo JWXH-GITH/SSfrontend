@@ -3,9 +3,7 @@ import "./App.css";
 
 function linkify(text) {
   const urlRegex = /^(https?:\/\/)?([\w.-]+\.)+[a-z]{2,}(\/[^\s]*)?$/i;
-
-  // Split text by spaces to preserve words intact
-  const words = text.split(/(\s+)/); // keep spaces in result
+  const words = text.split(/(\s+)/);
 
   return words.map((word, index) => {
     if (urlRegex.test(word)) {
@@ -32,15 +30,15 @@ export default function App() {
     { id: 1, sender: "bot", text: "Hello! How can I assist you today?" },
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
 
-  // Use env var or fallback localhost
   const apiBaseUrl = "https://swimsafer-chatbot.onrender.com";
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -52,23 +50,22 @@ export default function App() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
+    const userMessage = input.trim();
     setMessages((prev) => [
       ...prev,
-      { id: prev.length + 1, sender: "user", text: input.trim() },
+      { id: prev.length + 1, sender: "user", text: userMessage },
     ]);
-    const userMessage = input.trim();
     setInput("");
+    setIsLoading(true);
 
     try {
-// Convert local `messages` array to OpenAI format
-const res = await fetch(`${apiBaseUrl}/chat`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    messages: [{ role: "user", content: userMessage }],
-  }),
-});
-
+      const res = await fetch(`${apiBaseUrl}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: userMessage }],
+        }),
+      });
 
       const data = await res.json();
 
@@ -80,9 +77,11 @@ const res = await fetch(`${apiBaseUrl}/chat`, {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev,
-        { id: prev.length + 1, sender: "bot", text: "Server Timeout, please try again later." },
+        { id: prev.length + 1, sender: "bot", text: "Error connecting to backend." },
       ]);
     }
+
+    setIsLoading(false);
   };
 
   const handleKeyDown = (e) => {
@@ -107,6 +106,15 @@ const res = await fetch(`${apiBaseUrl}/chat`, {
             {linkify(msg.text)}
           </div>
         ))}
+
+        {isLoading && (
+          <div className="message-bubble bot-bubble typing-indicator">
+            <span className="typing-dot" />
+            <span className="typing-dot delay-1" />
+            <span className="typing-dot delay-2" />
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
 
