@@ -94,7 +94,7 @@ const res = await fetch(`${apiBaseUrl}/chat`, {
 
   return (
     <div className="chatbot-wrapper">
-      <div className="chatbot-header">Chatbot</div>
+      <div className="chatbot-header">🏊 SwimSafer FAQ Chatbot</div>
 
       <div className="messages-area">
         {messages.map((msg) => (
