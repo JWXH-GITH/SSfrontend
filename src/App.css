@@ -1,7 +1,6 @@
 .chatbot-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  height: 100%; /* changed from 100vh */
+  min-height: 780px; /* match iframe height */
   max-width: 720px;
   margin: 0 auto;
   background-color: #202123;
@@ -10,6 +9,8 @@
   border-radius: 10px;
   overflow: hidden;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatbot-header {
@@ -24,12 +25,13 @@
 .messages-area {
   flex: 1;
   padding: 20px 24px;
-  overflow-y: auto;
+  overflow-y: scroll; /* always show scrollbar to prevent layout shift */
   display: flex;
   flex-direction: column;
   gap: 12px;
   scrollbar-width: thin;
   scrollbar-color: #555 transparent;
+  padding-right: 8px; /* avoid content behind scrollbar */
 }
 
 .messages-area::-webkit-scrollbar {
@@ -71,6 +73,8 @@
   padding: 12px 24px;
   border-top: 1px solid #444654;
   background-color: #343541;
+  height: 64px; /* fixed height to prevent jumps */
+  align-items: center; /* vertically center textarea and button */
 }
 
 .chat-input {
@@ -87,6 +91,7 @@
   line-height: 1.4;
   max-height: 200px;
   overflow-y: auto;
+  height: 40px; /* fixed initial height */
 }
 
 .send-btn {
