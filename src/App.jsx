@@ -37,7 +37,8 @@ export default function App() {
   const apiBaseUrl = "https://swimsafer-chatbot.onrender.com";
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Changed behavior from 'smooth' to 'auto' to prevent page shifting on scroll
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages, isLoading]);
 
   useEffect(() => {
