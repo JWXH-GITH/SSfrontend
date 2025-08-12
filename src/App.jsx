@@ -37,14 +37,15 @@ export default function App() {
   const apiBaseUrl = "https://swimsafer-chatbot.onrender.com";
 
   useEffect(() => {
-    // Changed behavior from 'smooth' to 'auto' to prevent page shifting on scroll
+    // Scroll instantly, no smooth scroll, to avoid parent page jump
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages, isLoading]);
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+      const newHeight = Math.min(textareaRef.current.scrollHeight, 150); // max height 150px
+      textareaRef.current.style.height = newHeight + "px";
     }
   }, [input]);
 
@@ -96,7 +97,14 @@ export default function App() {
     <div className="chatbot-wrapper">
       <div className="chatbot-header">🏊 SwimSafer FAQ Chatbot</div>
 
-      <div className="messages-area">
+      <div
+        className="messages-area"
+        style={{
+          maxHeight: "600px",
+          overflowY: "auto",
+          paddingRight: "8px", // for scrollbar space
+        }}
+      >
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -139,6 +147,7 @@ export default function App() {
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
+          style={{ maxHeight: "150px", resize: "none" }}
         />
         <button type="submit" className="send-btn" aria-label="Send message">
           ➤
